@@ -117,7 +117,7 @@ const surpriseMessages = [
 
   'Entre tantas pessoas no mundo, meu coração escolheu você. E eu escolheria você de novo.',
 
-  'Heloísa, você é uma parte muito bonita da minha história. ❤️'
+  'Heloísa, você é uma parte muito bonita da minha história. Vou adorar contar aos nossos filhos a quanto tempos nos conhecemos e pelo o que passamos. ❤️'
 ];
 
 surpriseButton.addEventListener('click', () => {
