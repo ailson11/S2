@@ -1,1 +1,440 @@
-# S2
+<!-- Bibliotecas e fontes -->
+<script>
+  window.tailwind = window.tailwind || {};
+  window.tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          rose: {
+            50: '#fff1f2',
+            100: '#ffe4e6',
+            200: '#fecdd3',
+            300: '#fda4af',
+            400: '#fb7185',
+            500: '#f43f5e',
+            600: '#e11d48',
+            700: '#be123c',
+            800: '#9f1239',
+            900: '#881337'
+          }
+        },
+        fontFamily: {
+          script: ['Great Vibes', 'cursive'],
+          serif: ['Playfair Display', 'serif'],
+          sans: ['Poppins', 'sans-serif']
+        }
+      }
+    }
+  };
+</script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap"
+  rel="stylesheet"
+>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+>
+
+<!-- Fundo de partículas -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- Cabeçalho -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-md border-b border-rose-100">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+
+    <div class="flex items-center gap-2">
+      <i class="fa-solid fa-heart text-rose-500"></i>
+      <span class="font-serif font-semibold text-gray-800">
+        Heloísa<span class="text-rose-500">&</span>Eu
+      </span>
+    </div>
+
+    <button
+      id="musicButton"
+      title="Tocar Música Ambiente"
+      class="w-10 h-10 rounded-full bg-rose-100 text-rose-500 flex items-center justify-center hover:bg-rose-200 transition"
+    >
+      <i class="fa-solid fa-music"></i>
+    </button>
+
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="min-h-screen flex items-center justify-center relative px-6 pt-20">
+
+  <div class="max-w-4xl mx-auto text-center relative z-10">
+
+    <div class="mb-6">
+      <i class="fa-solid fa-heart text-rose-400 text-3xl animate-pulse"></i>
+    </div>
+
+    <p class="uppercase tracking-[0.35em] text-sm text-rose-500 mb-5">
+      Para Heloísa
+    </p>
+
+    <h1 class="font-script text-6xl md:text-8xl text-gray-800 leading-tight mb-6">
+      O Amor da Minha Vida
+    </h1>
+
+    <p class="font-serif italic text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+      Algumas pessoas chegam em nossas vidas por acaso.
+      Outras parecem ter sido escritas para ficar.
+    </p>
+
+    <div class="mt-10 flex justify-center">
+      <a
+        href="#carta"
+        class="px-7 py-3 bg-rose-500 text-white rounded-full shadow-lg shadow-rose-200 hover:bg-rose-600 hover:-translate-y-1 transition-all"
+      >
+        Ler minha carta
+        <i class="fa-solid fa-arrow-down ml-2"></i>
+      </a>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Carta -->
+<section id="carta" class="py-24 px-6 bg-white/70">
+  <div class="max-w-4xl mx-auto">
+
+    <div class="text-center mb-14">
+      <p class="uppercase tracking-[0.3em] text-xs text-rose-500 mb-3">
+        De mim para você
+      </p>
+
+      <h2 class="font-serif text-4xl md:text-5xl text-gray-800">
+        Uma carta para Heloísa
+      </h2>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-xl shadow-rose-100/50 p-8 md:p-14 border border-rose-100 relative">
+
+      <div class="absolute top-6 left-6 text-rose-200 text-4xl">
+        <i class="fa-solid fa-quote-left"></i>
+      </div>
+
+      <div class="relative z-10 font-serif text-lg md:text-xl text-gray-700 leading-loose">
+
+        <p class="mb-6">
+          Amor, existem pessoas que passam pela nossa vida e deixam
+          lembranças. Mas existem aquelas que chegam e ficam por três longos anos, o que não acho que seja muito comparado ao que viveremos em nosso futuro.
+        </p>
+
+        <p class="mb-6">
+          Não acho que seja possível amar uma outra mulher quando se tem você em minha vida.
+        </p>
+
+        <p class="mb-6">
+          É difícil explicar exatamente o que você significa, porque
+          algumas coisas são grandes demais para caber em palavras. Assim como eu sempre lhe disse: "não há palavras suficientes neste mundo que diga o quanto eu te amo."
+          Mas, se eu tivesse que tentar, diria que você é uma das partes
+          mais bonitas da minha vida.
+        </p>
+
+        <p class="mb-6">
+          Amo seu jeito, seu sorriso, sua presença e até as pequenas
+          coisas que talvez você nem perceba que faz. Sei que não somos perfeitos, temos muito o que amadurecer,
+          e é por isso que nosso futuro promete tanto, porque eu te amo, Heloísa.
+        </p>
+
+        <p class="mb-6">
+          Você tornou momentos comuns em memórias especiais e fez com que
+          dias simples tivessem um significado diferente.
+        </p>
+
+        <p class="mb-8">
+          Eu só quero que você saiba que é muito especial para mim.
+          E, independentemente de qualquer coisa, existe uma grande parte no meu
+          coração que sempre vai lembrar de você com muito carinho.
+        </p>
+
+        <div class="text-center mt-10">
+          <p class="font-script text-5xl text-rose-500">
+            Eu te amo, Heloísa.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Motivos -->
+<section class="py-24 px-6 bg-rose-50/60">
+
+  <div class="max-w-6xl mx-auto">
+
+    <div class="text-center mb-14">
+      <p class="uppercase tracking-[0.3em] text-xs text-rose-500 mb-3">
+        Porque você é especial
+      </p>
+
+      <h2 class="font-serif text-4xl md:text-5xl text-gray-800">
+        Motivos Para Te Amar
+      </h2>
+
+      <p class="text-gray-500 mt-4">
+        Clique nos cartões.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div class="flip-card h-64 cursor-pointer">
+        <div class="flip-card-inner">
+          <div class="flip-card-front bg-white rounded-3xl shadow-lg border border-rose-100 flex flex-col items-center justify-center p-6">
+            <i class="fa-solid fa-face-smile text-rose-400 text-4xl mb-5"></i>
+            <h3 class="font-serif text-2xl text-gray-800">Seu sorriso</h3>
+          </div>
+
+          <div class="flip-card-back bg-rose-500 text-white rounded-3xl shadow-lg flex items-center justify-center p-8 text-center">
+            <p>
+              Porque quando você sorri, parece que tudo ao redor fica um
+              pouco mais bonito.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card h-64 cursor-pointer">
+        <div class="flip-card-inner">
+          <div class="flip-card-front bg-white rounded-3xl shadow-lg border border-rose-100 flex flex-col items-center justify-center p-6">
+            <i class="fa-solid fa-heart text-rose-400 text-4xl mb-5"></i>
+            <h3 class="font-serif text-2xl text-gray-800">Sua coragem</h3>
+          </div>
+
+          <div class="flip-card-back bg-rose-500 text-white rounded-3xl shadow-lg flex items-center justify-center p-8 text-center">
+            <p>
+              Já passou por tantas coisas inimagináveis, isso é o mais admirável em você, meu amor.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card h-64 cursor-pointer">
+        <div class="flip-card-inner">
+          <div class="flip-card-front bg-white rounded-3xl shadow-lg border border-rose-100 flex flex-col items-center justify-center p-6">
+            <i class="fa-solid fa-star text-rose-400 text-4xl mb-5"></i>
+            <h3 class="font-serif text-2xl text-gray-800">Seu jeito</h3>
+          </div>
+
+          <div class="flip-card-back bg-rose-500 text-white rounded-3xl shadow-lg flex items-center justify-center p-8 text-center">
+            <p>
+              Porque você tem um jeito único de ser e é justamente isso
+              que faz você ser você.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card h-64 cursor-pointer">
+        <div class="flip-card-inner">
+          <div class="flip-card-front bg-white rounded-3xl shadow-lg border border-rose-100 flex flex-col items-center justify-center p-6">
+            <i class="fa-solid fa-sparkles text-rose-400 text-4xl mb-5"></i>
+            <h3 class="font-serif text-2xl text-gray-800">Sua presença</h3>
+          </div>
+
+          <div class="flip-card-back bg-rose-500 text-white rounded-3xl shadow-lg flex items-center justify-center p-8 text-center">
+            <p>
+              Porque só ter você por perto já consegue deixar qualquer
+              momento melhor. Eu me sinto em casa.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card h-64 cursor-pointer">
+        <div class="flip-card-inner">
+          <div class="flip-card-front bg-white rounded-3xl shadow-lg border border-rose-100 flex flex-col items-center justify-center p-6">
+            <i class="fa-solid fa-cloud text-rose-400 text-4xl mb-5"></i>
+            <h3 class="font-serif text-2xl text-gray-800">As pequenas coisas</h3>
+          </div>
+
+          <div class="flip-card-back bg-rose-500 text-white rounded-3xl shadow-lg flex items-center justify-center p-8 text-center">
+            <p>
+              Até as pequenas coisas que você faz conseguem ficar guardadas
+              na minha memória.  (e olha que minha memória não é boa kkj)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card h-64 cursor-pointer">
+        <div class="flip-card-inner">
+          <div class="flip-card-front bg-white rounded-3xl shadow-lg border border-rose-100 flex flex-col items-center justify-center p-6">
+            <i class="fa-solid fa-infinity text-rose-400 text-4xl mb-5"></i>
+            <h3 class="font-serif text-2xl text-gray-800">Você</h3>
+          </div>
+
+          <div class="flip-card-back bg-rose-500 text-white rounded-3xl shadow-lg flex items-center justify-center p-8 text-center">
+            <p>
+              Porque no final de todos os motivos, o maior motivo é
+              simplesmente você existir na minha vida.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Contador -->
+<section class="py-24 px-6 bg-white">
+
+  <div class="max-w-4xl mx-auto text-center">
+
+    <i class="fa-solid fa-heart-pulse text-rose-500 text-5xl mb-6"></i>
+
+    <h2 class="font-serif text-4xl md:text-5xl text-gray-800 mb-5">
+      Meu coração por você
+    </h2>
+
+    <p class="text-gray-500 mb-10">
+      E ele continua batendo...
+    </p>
+
+    <div class="bg-rose-50 rounded-3xl p-10 border border-rose-100">
+
+      <div
+        id="heartbeatCounter"
+        class="font-serif text-5xl md:text-7xl text-rose-500 font-semibold"
+      >
+        1.420.800
+      </div>
+
+      <p class="uppercase tracking-[0.3em] text-xs text-gray-500 mt-4">
+        batimentos de amor
+      </p>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Surpresa -->
+<section class="py-24 px-6 bg-rose-50/60">
+
+  <div class="max-w-3xl mx-auto text-center">
+
+    <p class="uppercase tracking-[0.3em] text-xs text-rose-500 mb-3">
+      Uma pequena surpresa
+    </p>
+
+    <h2 class="font-serif text-4xl md:text-5xl text-gray-800 mb-8">
+      Clique e descubra
+    </h2>
+
+    <button
+      id="surpriseButton"
+      class="px-8 py-4 bg-rose-500 text-white rounded-full shadow-lg shadow-rose-200 hover:bg-rose-600 hover:-translate-y-1 transition-all"
+    >
+      <i class="fa-solid fa-gift mr-2"></i>
+      Abrir surpresa
+    </button>
+
+    <div
+      id="surpriseMessage"
+      class="hidden mt-10 bg-white rounded-3xl p-10 shadow-xl border border-rose-100"
+    ></div>
+
+  </div>
+</section>
+
+<!-- Quiz -->
+<section class="py-24 px-6 bg-white">
+
+  <div class="max-w-3xl mx-auto">
+
+    <div class="text-center mb-12">
+      <p class="uppercase tracking-[0.3em] text-xs text-rose-500 mb-3">
+        Um joguinho
+      </p>
+
+      <h2 class="font-serif text-4xl md:text-5xl text-gray-800">
+        Você sabe o quanto eu te amo?
+      </h2>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-xl border border-rose-100 p-8 md:p-12">
+
+      <div id="quizContainer">
+
+        <h3
+          id="quizQuestion"
+          class="font-serif text-2xl text-gray-800 text-center mb-8"
+        >
+          Qual dessas opções representa melhor o que sinto por você?
+        </h3>
+
+        <div id="quizOptions" class="grid gap-4">
+
+          <button
+            class="quiz-option p-4 rounded-2xl border border-rose-100 hover:bg-rose-50 transition"
+            data-correct="false"
+          >
+            Um pouquinho
+          </button>
+
+          <button
+            class="quiz-option p-4 rounded-2xl border border-rose-100 hover:bg-rose-50 transition"
+            data-correct="false"
+          >
+            Bastante
+          </button>
+
+          <button
+            class="quiz-option p-4 rounded-2xl border border-rose-100 hover:bg-rose-50 transition"
+            data-correct="true"
+          >
+            Mais do que consigo explicar
+          </button>
+
+          <button
+            class="quiz-option p-4 rounded-2xl border border-rose-100 hover:bg-rose-50 transition"
+            data-correct="false"
+          >
+            Não sei
+          </button>
+
+        </div>
+
+        <div
+          id="quizResult"
+          class="hidden text-center mt-8 font-serif text-xl"
+        ></div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rodapé -->
+<footer class="py-12 px-6 bg-gray-900 text-white text-center">
+
+  <div class="max-w-3xl mx-auto">
+
+    <i class="fa-solid fa-heart text-rose-400 text-3xl mb-5"></i>
+
+    <p class="font-script text-4xl text-rose-300 mb-4">
+      Para sempre, Heloísa.
+    </p>
+
+    <p class="text-gray-400 text-sm">
+      Feito com amor, carinho e um pouquinho de código.
+    </p>
+
+  </div>
+
+</footer>
