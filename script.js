@@ -1,7 +1,6 @@
 /* =========================
    PARTÍCULAS
 ========================= */
-
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -13,7 +12,6 @@ function resizeCanvas() {
 }
 
 resizeCanvas();
-
 window.addEventListener('resize', resizeCanvas);
 
 class Particle {
@@ -42,19 +40,11 @@ class Particle {
 
   draw() {
     ctx.save();
-
     ctx.globalAlpha = this.opacity;
     ctx.fillStyle = '#fda4af';
 
     ctx.beginPath();
-    ctx.arc(
-      this.x,
-      this.y,
-      this.size,
-      0,
-      Math.PI * 2
-    );
-
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
   }
@@ -65,12 +55,7 @@ for (let i = 0; i < 80; i++) {
 }
 
 function animateParticles() {
-  ctx.clearRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   particles.forEach((particle) => {
     particle.update();
@@ -82,11 +67,9 @@ function animateParticles() {
 
 animateParticles();
 
-
 /* =========================
    CARTÕES
 ========================= */
-
 const flipCards = document.querySelectorAll('.flip-card');
 
 flipCards.forEach((card) => {
@@ -95,38 +78,26 @@ flipCards.forEach((card) => {
   });
 });
 
-
 /* =========================
    SURPRESA
 ========================= */
-
-const surpriseButton =
-  document.getElementById('surpriseButton');
-
-const surpriseMessage =
-  document.getElementById('surpriseMessage');
+const surpriseButton = document.getElementById('surpriseButton');
+const surpriseMessage = document.getElementById('surpriseMessage');
 
 const surpriseMessages = [
   'Se eu pudesse escolher uma pessoa para encontrar em todas as vidas, escolheria você. ❤️',
-
   'Você é uma daquelas pessoas que fazem a vida parecer mais bonita simplesmente por existir.',
-
   'Meu lugar favorito é qualquer lugar onde eu possa estar com você.',
-
   'Talvez eu não consiga explicar tudo que sinto, mas espero que você consiga sentir através de cada pequeno gesto.',
-
   'Entre tantas pessoas no mundo, meu coração escolheu você. E eu escolheria você de novo.',
-
   'Heloísa, você é uma parte muito bonita da minha história. Vou adorar contar aos nossos filhos a quanto tempos nos conhecemos e pelo o que passamos. ❤️'
 ];
 
 surpriseButton.addEventListener('click', () => {
-  const randomIndex =
-    Math.floor(Math.random() * surpriseMessages.length);
+  const randomIndex = Math.floor(Math.random() * surpriseMessages.length);
 
   surpriseMessage.innerHTML = `
     <i class="fa-solid fa-heart text-rose-400 text-4xl mb-5"></i>
-
     <p class="font-serif text-xl md:text-2xl text-gray-700 leading-relaxed">
       ${surpriseMessages[randomIndex]}
     </p>
@@ -136,57 +107,34 @@ surpriseButton.addEventListener('click', () => {
   surpriseMessage.classList.add('animate-fade-in');
 });
 
-
 /* =========================
    QUIZ
 ========================= */
-
-const quizOptions =
-  document.querySelectorAll('.quiz-option');
-
-const quizResult =
-  document.getElementById('quizResult');
+const quizOptions = document.querySelectorAll('.quiz-option');
+const quizResult = document.getElementById('quizResult');
 
 quizOptions.forEach((option) => {
   option.addEventListener('click', () => {
-
-    const correct =
-      option.dataset.correct === 'true';
+    const correct = option.dataset.correct === 'true';
 
     quizOptions.forEach((button) => {
       button.disabled = true;
-
       if (button.dataset.correct === 'true') {
         button.classList.add('correct');
       }
     });
 
     if (correct) {
-
       option.classList.add('correct');
-
       quizResult.innerHTML = `
-        <span class="text-rose-500">
-          Acertou! ❤️
-        </span>
-        <br>
-        <span class="text-gray-600 text-base">
-          Mas mesmo essa resposta ainda não consegue explicar tudo.
-        </span>
+        <span class="text-rose-500">Acertou! ❤️</span><br>
+        <span class="text-gray-600 text-base">Mas mesmo essa resposta ainda não consegue explicar tudo.</span>
       `;
-
     } else {
-
       option.classList.add('wrong');
-
       quizResult.innerHTML = `
-        <span class="text-rose-500">
-          Quase... ❤️
-        </span>
-        <br>
-        <span class="text-gray-600 text-base">
-          A resposta certa é: mais do que consigo explicar.
-        </span>
+        <span class="text-rose-500">Quase... ❤️</span><br>
+        <span class="text-gray-600 text-base">A resposta certa é: mais do que consigo explicar.</span>
       `;
     }
 
@@ -194,23 +142,15 @@ quizOptions.forEach((option) => {
   });
 });
 
-
 /* =========================
    CONTADOR DE BATIMENTOS
 ========================= */
-
-const heartbeatCounter =
-  document.getElementById('heartbeatCounter');
-
+const heartbeatCounter = document.getElementById('heartbeatCounter');
 let heartbeats = 1420800;
 
 function updateHeartbeat() {
-
   heartbeats++;
-
-  heartbeatCounter.textContent =
-    heartbeats.toLocaleString('pt-BR');
-
+  heartbeatCounter.textContent = heartbeats.toLocaleString('pt-BR');
   heartbeatCounter.classList.add('heartbeat');
 
   setTimeout(() => {
@@ -220,66 +160,37 @@ function updateHeartbeat() {
 
 setInterval(updateHeartbeat, 800);
 
-
 /* =========================
    MÚSICA AMBIENTE
 ========================= */
-
-const musicButton =
-  document.getElementById('musicButton');
-
+const musicButton = document.getElementById('musicButton');
 let audioContext = null;
 let isPlaying = false;
 let musicInterval = null;
 
 function playSoftChord() {
-
   if (!audioContext) {
-    audioContext =
-      new (
-        window.AudioContext ||
-        window.webkitAudioContext
-      )();
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
   }
 
   if (audioContext.state === 'suspended') {
     audioContext.resume();
   }
 
-  const frequencies = [
-    261.63,
-    329.63,
-    392.00
-  ];
+  const frequencies = [261.63, 329.63, 392.00];
 
   frequencies.forEach((frequency, index) => {
-
-    const oscillator =
-      audioContext.createOscillator();
-
-    const gain =
-      audioContext.createGain();
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
 
     oscillator.type = 'sine';
     oscillator.frequency.value = frequency;
 
-    const startTime =
-      audioContext.currentTime + index * 0.05;
+    const startTime = audioContext.currentTime + index * 0.05;
 
-    gain.gain.setValueAtTime(
-      0,
-      startTime
-    );
-
-    gain.gain.linearRampToValueAtTime(
-      0.035,
-      startTime + 0.4
-    );
-
-    gain.gain.linearRampToValueAtTime(
-      0,
-      startTime + 2.5
-    );
+    gain.gain.setValueAtTime(0, startTime);
+    gain.gain.linearRampToValueAtTime(0.035, startTime + 0.4);
+    gain.gain.linearRampToValueAtTime(0, startTime + 2.5);
 
     oscillator.connect(gain);
     gain.connect(audioContext.destination);
@@ -290,46 +201,29 @@ function playSoftChord() {
 }
 
 musicButton.addEventListener('click', () => {
-
   if (!isPlaying) {
-
     isPlaying = true;
-
-    musicButton.innerHTML =
-      '<i class="fa-solid fa-pause"></i>';
-
+    musicButton.innerHTML = '<i class="fa-solid fa-pause"></i>';
     playSoftChord();
-
-    musicInterval =
-      setInterval(playSoftChord, 2800);
-
+    musicInterval = setInterval(playSoftChord, 2800);
   } else {
-
     isPlaying = false;
-
-    musicButton.innerHTML =
-      '<i class="fa-solid fa-music"></i>';
-
+    musicButton.innerHTML = '<i class="fa-solid fa-music"></i>';
     clearInterval(musicInterval);
   }
 });
 
-
 /* =========================
    MOVIMENTO SUAVE DOS CARDS
 ========================= */
-
-document.querySelectorAll('.flip-card')
-  .forEach((card) => {
-
-    card.addEventListener('mouseenter', () => {
-      if (!card.classList.contains('flipped')) {
-        card.style.transform = 'translateY(-4px)';
-      }
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-
+document.querySelectorAll('.flip-card').forEach((card) => {
+  card.addEventListener('mouseenter', () => {
+    if (!card.classList.contains('flipped')) {
+      card.style.transform = 'translateY(-4px)';
+    }
   });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
