@@ -1,218 +1,211 @@
-html {
-  scroll-behavior: smooth;
+/* Reset e Estilos Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* Oculta o cursor padrão para usar o coração */
 }
 
 body {
-  margin: 0;
-  background: #fffafa;
-  color: #374151;
-  font-family: 'Poppins', sans-serif;
-  overflow-x: hidden;
-  /* Esconde o cursor padrão onde o custom cursor estiver ativo */
-  cursor: default; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffe6e6;
+    color: #333;
+    overflow-x: hidden;
+    text-align: center;
 }
 
-::selection {
-  background: #fda4af;
-  color: white;
+/* Cursor de Coração */
+#cursor-coracao {
+    width: 20px;
+    height: 20px;
+    background-color: #ff3366;
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px #ff3366;
 }
-
-/* ==================
-   CURSOR PERSONALIZADO
-   ================== */
-#custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #f43f5e;
-  font-size: 20px;
-  text-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+#cursor-coracao::before, #cursor-coracao::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #ff3366;
+    border-radius: 50%;
 }
-#custom-cursor.click-effect {
-  transform: translate(-50%, -50%) scale(0.5);
-}
-#custom-cursor.hover-effect {
-  transform: translate(-50%, -50%) scale(1.5);
-  color: #be123c;
-}
-/* Desativar em telas sensíveis ao toque */
-@media (hover: none) and (pointer: coarse) {
-  #custom-cursor {
-    display: none;
-  }
-}
-
-/* Partículas */
-#particleCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ==================
-   ANIMAÇÕES DE SCROLL (REVEAL)
-   ================== */
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-}
-.scroll-reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Cartões 3D */
-.perspective-1000 {
-  perspective: 1000px;
-}
-.flip-card {
-  perspective: 1000px;
-}
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-style: preserve-3d;
-}
-.flip-card.flipped .flip-card-inner,
-.flip-card:hover .flip-card-inner {
-  transform: rotateY(180deg);
-}
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-.flip-card-back {
-  transform: rotateY(180deg);
-}
-
-/* Galeria Interativa (Polaroids) */
-.polaroid-card {
-  cursor: grab;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s;
-}
-.polaroid-card:active {
-  cursor: grabbing;
-  transform: scale(1.05) rotate(0deg) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  z-index: 50 !important;
-}
-
-/* Animações e Keyframes */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes pulse-slow {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.8; }
-}
-.animate-pulse-slow {
-  animation: pulse-slow 3s infinite ease-in-out;
-}
-
-@keyframes scaleIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.scale-in {
-  animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  15% { transform: scale(1.15); }
-  30% { transform: scale(1); }
-  45% { transform: scale(1.1); }
-}
-.heartbeat {
-  animation: heartbeat 1s infinite;
-}
-.heartbeat-slow {
-  animation: heartbeat 2s infinite;
-}
-
-/* Botoes Quiz e Timeline */
-.timeline-btn {
-  color: #f43f5e; /* rose-500 */
-}
-.timeline-btn.active {
-  background-color: #f43f5e;
-  color: white;
-  box-shadow: 0 10px 15px -3px rgba(244, 63, 94, 0.3);
-}
-
-.timeline-content {
-  transition: all 0.5s ease;
-}
-.timeline-content.hidden {
-  display: none;
-  opacity: 0;
-}
-.timeline-content.active {
-  display: block;
-  animation: scaleIn 0.5s forwards;
-}
-
-.quiz-option.correct {
-  background: #f0fdf4 !important;
-  border-color: #4ade80 !important;
-  color: #166534 !important;
-}
-.quiz-option.correct i {
-  opacity: 1 !important;
-}
-.quiz-option.wrong {
-  background: #fef2f2 !important;
-  border-color: #f87171 !important;
-  color: #991b1b !important;
-  opacity: 0.7;
-}
-.quiz-option.wrong i {
-  opacity: 1 !important;
-}
+#cursor-coracao::before { top: -10px; left: 0; }
+#cursor-coracao::after { top: 0; left: 10px; }
 
 /* Chuva de Corações */
-.falling-heart {
-  position: fixed;
-  top: -10vh;
-  color: #f43f5e;
-  font-size: 24px;
-  pointer-events: none;
-  z-index: 9999;
-  animation: fall linear forwards;
-  filter: drop-shadow(0 0 5px rgba(244,63,94,0.5));
+#container-coracoes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+}
+.coracao-caindo {
+    position: absolute;
+    color: rgba(255, 51, 102, 0.6);
+    font-size: 20px;
+    animation: cair linear infinite;
+}
+@keyframes cair {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
 
-@keyframes fall {
-  0% {
-    transform: translateY(0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(110vh) rotate(360deg) scale(0.5);
-    opacity: 0;
-  }
+/* Botão de Música */
+#btn-musica {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff3366;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    z-index: 100;
 }
+
+/* Animações de Scroll */
+.secao {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+}
+.secao.visivel {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Coração Pulsante */
+.coracao-pulsante {
+    font-size: 80px;
+    animation: pulsar 1s infinite alternate;
+    margin: 20px 0;
+}
+@keyframes pulsar {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+/* Formulários e Botões */
+input, button {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid #ff99aa;
+    font-size: 16px;
+}
+button {
+    background-color: #ff3366;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+button:hover {
+    background-color: #cc0033;
+}
+
+/* Galeria Polaroid */
+.area-polaroids {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+.polaroid {
+    background: white;
+    padding: 15px 15px 30px 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: absolute;
+    width: 200px;
+    transform: rotate(-5deg);
+    transition: transform 0.2s, z-index 0.2s;
+    user-select: none;
+}
+.polaroid:nth-child(2) { transform: rotate(3deg); left: 30%; }
+.polaroid:nth-child(3) { transform: rotate(-2deg); left: 60%; }
+.polaroid:active { transform: scale(1.05) rotate(0deg); z-index: 10; }
+.foto-placeholder {
+    width: 100%;
+    height: 150px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.dica { font-size: 12px; color: #666; margin-bottom: 20px; }
+
+/* Cartões 3D */
+.container-cartoes {
+    display: flex;
+    gap: 20px;
+}
+.cartao {
+    width: 200px;
+    height: 150px;
+    perspective: 1000px;
+}
+.cartao-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+.cartao:hover .cartao-inner {
+    transform: rotateY(180deg);
+}
+.cartao-frente, .cartao-costas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.cartao-frente { background-color: white; color: #ff3366; font-weight: bold; }
+.cartao-costas { background-color: #ff3366; color: white; transform: rotateY(180deg); }
+
+/* Linha do Tempo */
+.timeline {
+    list-style-type: none;
+    border-left: 3px solid #ff3366;
+    padding-left: 20px;
+    text-align: left;
+}
+.timeline li {
+    margin-bottom: 20px;
+    position: relative;
+}
+.timeline li::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    background: #ff3366;
+    border-radius: 50%;
+}
+
+.escondido { display: none; margin-top: 20px; font-size: 24px; font-weight: bold; color: #ff3366; }
