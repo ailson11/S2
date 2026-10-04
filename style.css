@@ -69,44 +69,30 @@ body {
   animation: float 3s ease-in-out infinite;
 }
 
-/* Fade */
+/* Fade In Base */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.7s ease forwards;
+  animation: fadeIn 0.5s ease forwards;
 }
 
-/* Pulso */
+/* Pulso Coração */
 @keyframes heartbeat {
-  0%, 100% {
-    transform: scale(1);
-  }
-  15% {
-    transform: scale(1.08);
-  }
-  30% {
-    transform: scale(1);
-  }
-  45% {
-    transform: scale(1.05);
-  }
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.08); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.05); }
 }
 
 .heartbeat {
   animation: heartbeat 1.2s infinite;
 }
 
-/* Botões do quiz */
-.quiz-option {
+/* Botões do quiz e timeline */
+.quiz-option, .timeline-btn {
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
 }
@@ -123,12 +109,35 @@ body {
   color: #6b7280;
 }
 
-/* Surpresa */
-#surpriseMessage {
-  animation: fadeIn 0.7s ease forwards;
+/* Timeline Active State */
+.timeline-btn.active {
+  background-color: #f43f5e; /* rose-500 */
+  color: white;
 }
 
-/* Mobile */
+/* Chuva de Corações (Animação CSS) */
+.falling-heart {
+  position: fixed;
+  top: -10vh;
+  color: #f43f5e;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Mobile Adjustments */
 @media (max-width: 640px) {
   .font-script {
     line-height: 1.1;

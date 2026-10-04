@@ -44,13 +44,18 @@
   <!-- Fundo de partículas -->
   <canvas id="particleCanvas"></canvas>
 
+  <!-- Botão Flutuante Chuva de Corações -->
+  <button id="rainButton" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-rose-500 text-white rounded-full shadow-lg shadow-rose-300 flex items-center justify-center text-2xl hover:bg-rose-600 hover:scale-110 transition-transform duration-300" title="Espalhar Amor">
+    <i class="fa-solid fa-wand-magic-sparkles"></i>
+  </button>
+
   <!-- Cabeçalho -->
   <header class="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-md border-b border-rose-100">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-heart text-rose-500"></i>
         <span class="font-serif font-semibold text-gray-800">
-          Heloísa<span class="text-rose-500">&</span>Eu
+          Heloísa<span class="text-rose-500">&</span>Ailson
         </span>
       </div>
       <button id="musicButton" title="Tocar Música Ambiente" class="w-10 h-10 rounded-full bg-rose-100 text-rose-500 flex items-center justify-center hover:bg-rose-200 transition">
@@ -229,8 +234,39 @@
     </div>
   </section>
 
-  <!-- Contador -->
+  <!-- INTERAÇÃO 1: Linha do Tempo -->
   <section class="py-24 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="uppercase tracking-[0.3em] text-xs text-rose-500 mb-3">Nossa Trajetória</p>
+        <h2 class="font-serif text-4xl md:text-5xl text-gray-800">A Linha do Tempo</h2>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-4 mb-10">
+        <button class="timeline-btn active px-6 py-2 rounded-full border-2 border-rose-500 text-rose-500 font-semibold hover:bg-rose-50 transition" data-target="passado">O Início</button>
+        <button class="timeline-btn px-6 py-2 rounded-full border-2 border-rose-500 text-rose-500 font-semibold hover:bg-rose-50 transition" data-target="presente">Nossos 3 Anos</button>
+        <button class="timeline-btn px-6 py-2 rounded-full border-2 border-rose-500 text-rose-500 font-semibold hover:bg-rose-50 transition" data-target="futuro">O Futuro</button>
+      </div>
+
+      <div class="bg-rose-50 rounded-3xl p-8 border border-rose-100 min-h-[200px] flex items-center justify-center text-center">
+        <div id="passado" class="timeline-content animate-fade-in">
+          <i class="fa-solid fa-seedling text-3xl text-rose-400 mb-4"></i>
+          <p class="font-serif text-xl text-gray-700">Quando nossos caminhos se cruzaram, eu não imaginava a proporção que isso tomaria. Foi o começo da fase mais bonita da minha vida.</p>
+        </div>
+        <div id="presente" class="timeline-content hidden">
+          <i class="fa-solid fa-fire-flame-curved text-3xl text-rose-400 mb-4"></i>
+          <p class="font-serif text-xl text-gray-700">Três anos se passaram. Construímos memórias, superamos desafios e amadurecemos muito juntos. Você é meu lugar seguro.</p>
+        </div>
+        <div id="futuro" class="timeline-content hidden">
+          <i class="fa-solid fa-route text-3xl text-rose-400 mb-4"></i>
+          <p class="font-serif text-xl text-gray-700">Como eu disse na carta, nosso futuro promete muito. Temos muito o que viver, aprender e amar pela frente. Mal posso esperar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contador -->
+  <section class="py-24 px-6 bg-rose-50/60">
     <div class="max-w-4xl mx-auto text-center">
       <i class="fa-solid fa-heart-pulse text-rose-500 text-5xl mb-6"></i>
       <h2 class="font-serif text-4xl md:text-5xl text-gray-800 mb-5">
@@ -239,13 +275,48 @@
       <p class="text-gray-500 mb-10">
         E ele continua batendo...
       </p>
-      <div class="bg-rose-50 rounded-3xl p-10 border border-rose-100">
+      <div class="bg-white rounded-3xl p-10 border border-rose-100 shadow-lg">
         <div id="heartbeatCounter" class="font-serif text-5xl md:text-7xl text-rose-500 font-semibold">
           1.420.800
         </div>
         <p class="uppercase tracking-[0.3em] text-xs text-gray-500 mt-4">
           batimentos de amor
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERAÇÃO 2: Calculadora do Amor -->
+  <section class="py-24 px-6 bg-white">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="uppercase tracking-[0.3em] text-xs text-rose-500 mb-3">Teste Rápido</p>
+        <h2 class="font-serif text-4xl md:text-5xl text-gray-800">Calculadora de Almas Gêmeas</h2>
+      </div>
+
+      <div class="bg-white rounded-3xl shadow-xl border border-rose-100 p-8 md:p-12 text-center">
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
+          <input type="text" value="Ailson" readonly class="w-full md:w-48 text-center p-3 border border-rose-200 rounded-xl bg-gray-50 text-gray-600 font-serif text-xl focus:outline-none">
+          <i class="fa-solid fa-plus text-rose-400 text-2xl"></i>
+          <input type="text" placeholder="Seu nome..." id="calcName" class="w-full md:w-48 text-center p-3 border border-rose-400 rounded-xl bg-white text-gray-800 font-serif text-xl focus:outline-none focus:ring-2 focus:ring-rose-300">
+        </div>
+        
+        <button id="btnCalcular" class="px-8 py-3 bg-rose-500 text-white rounded-full font-semibold shadow-md hover:bg-rose-600 transition-colors">
+          Calcular Compatibilidade
+        </button>
+
+        <div id="calcLoading" class="hidden mt-8">
+          <i class="fa-solid fa-spinner animate-spin text-3xl text-rose-400 mb-2"></i>
+          <p class="text-gray-500">Analisando alinhamento dos astros...</p>
+        </div>
+
+        <div id="calcResult" class="hidden mt-8">
+          <div class="w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden">
+            <div id="calcProgress" class="bg-rose-500 h-4 rounded-full" style="width: 0%"></div>
+          </div>
+          <p class="font-script text-5xl text-rose-500 mb-2 mt-6">Infinito %</p>
+          <p class="font-serif text-gray-700 text-lg">Não precisa nem de cálculo. Fomos feitos um para o outro! ❤️</p>
+        </div>
       </div>
     </div>
   </section>
@@ -304,8 +375,8 @@
   </section>
 
   <!-- Rodapé -->
-  <footer class="py-12 px-6 bg-gray-900 text-white text-center">
-    <div class="max-w-3xl mx-auto">
+  <footer class="py-12 px-6 bg-gray-900 text-white text-center relative overflow-hidden">
+    <div class="max-w-3xl mx-auto relative z-10">
       <i class="fa-solid fa-heart text-rose-400 text-3xl mb-5"></i>
       <p class="font-script text-4xl text-rose-300 mb-4">
         Para sempre, Heloísa.
