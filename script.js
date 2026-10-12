@@ -1,462 +1,636 @@
-// Cursor Personalizado de Coração
-const cursor = document.getElementById('cursor-coracao');
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
+"use strict";
 
-// Música de Fundo
-const btnMusica = document.getElementById('btn-musica');
-const musica = document.getElementById('musica-fundo');
-let tocando = false;
+/* =====================================
+   FUNÇÕES AUXILIARES
+===================================== */
 
-btnMusica.addEventListener('click', () => {
-    if (tocando) {
-        musica.pause();
-        btnMusica.textContent = "🎵 Tocar Nossa Música";
-    } else {
-        musica.play();
-        btnMusica.textContent = "⏸️ Pausar Música";
-    }
-    tocando = !tocando;
-});
+const reduzirMovimento = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
 
-// Chuva de Corações Dinâmica
-function criarCoracao() {
-    const coracao = document.createElement('div');
-    coracao.classList.add('coracao-caindo');
-    coracao.textContent = '❤️';
-    coracao.style.left = Math.random() * 100 + 'vw';
-    coracao.style.animationDuration = Math.random() * 3 + 2 + 's';
-    
-    document.getElementById('container-coracoes').appendChild(coracao);
-    
-    setTimeout(() => {
-        coracao.remove();
-    }, 5000);
-}
-setInterval(criarCoracao, 300);
-
-// Contador de Batimentos (Fictício, atualiza a cada segundo)
-let batimentos = 35467200; // Valor base
-const displayBatimentos = document.getElementById('contador-batimentos');
-setInterval(() => {
-    batimentos += Math.floor(Math.random() * 3) + 1;
-    displayBatimentos.textContent = batimentos.toLocaleString('pt-BR');
-}, 1000);
-
-// Calculadora do Amor
-function calcularAmor() {
-    const resultado = document.getElementById('resultado-amor');
-    resultado.style.opacity = 0;
-    setTimeout(() => {
-        // Sempre 100% para Ailson e Heloísa!
-        resultado.textContent = "Compatibilidade: 1000%! Vocês nasceram um para o outro! ❤️";
-        resultado.style.transition = "opacity 0.5s";
-        resultado.style.opacity = 1;
-    }, 300);
+function selecionar(seletor) {
+  return document.querySelector(seletor);
 }
 
-// Quiz
-function responderQuiz(correto) {
-    const resultado = document.getElementById('resultado-quiz');
-    if (correto) {
-        resultado.textContent = "Acertou, meu amor! ❤️ Ninguém faz igual.";
-        resultado.style.color = "#ff3366";
-    } else {
-        resultado.textContent = "Errou! Tente de novo! 😂";
-        resultado.style.color = "#333";
-    }
+function selecionarTodos(seletor) {
+  return document.querySelectorAll(seletor);
 }
 
-// Botão Surpresa
-document.getElementById('btn-surpresa').addEventListener('click', () => {
-    const msg = document.getElementById('mensagem-surpresa');
-    msg.classList.remove('escondido');
-    msg.style.animation = "pulsar 1s infinite alternate";
-    
-    // Intensifica a chuva de corações
-    for(let i = 0; i < 30; i++) {
-        setTimeout(criarCoracao, i * 100);
-    }
-});
+/* =====================================
+   CURSOR DE CORAÇÃO
+===================================== */
 
-// Animação de Scroll (Revelar seções)
-const secoes = document.querySelectorAll('.animar-scroll');
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visivel');
-        }
-    });
-}, { threshold: 0.1 });
+const cursor = selecionar("#cursor-coracao");
 
-secoes.forEach(secao => {
-    observer.observe(secao);
-});
+if (cursor) {
+  document.addEventListener("pointermove", (evento) => {
+    if (evento.pointerType === "touch") return;
 
-// Lógica de Arrastar Polaroids
-const polaroids = document.querySelectorAll('.arrastavel');
-let dragElemento = null;
-let offset = [0, 0];
-let zIndexAtual = 10;
-
-polaroids.forEach(polaroid => {
-    polaroid.addEventListener('mousedown', (e) => {
-        dragElemento = polaroid;
-        dragElemento.style.zIndex = ++zIndexAtual;
-        offset = [
-            dragElemento.offsetLeft - e.clientX,
-            dragElemento.offsetTop - e.clientY
-        ];
-    });
-});
-
-document.addEventListener('mouseup', () => {
-    dragElemento = null;
-});
-
-document.addEventListener('mousemove', (e) => {
-    e.preventDefault();
-    if (dragElemento) {
-        const mousePosition = { x: e.clientX, y: e.clientY };
-        dragElemento.style.left = (mousePosition.x + offset[0]) + 'px';
-        dragElemento.style.top = (mousePosition.y + offset[1]) + 'px';
-        dragElemento.style.position = 'absolute';
-    }
-});
-/* =========================
-   PARTÍCULAS
-========================= */
-
-const canvas = document.getElementById('particleCanvas');
-const ctx = canvas.getContext('2d');
-
-let particles = [];
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+    cursor.style.left = `${evento.clientX}px`;
+    cursor.style.top = `${evento.clientY}px`;
+  });
 }
 
-resizeCanvas();
+/* =====================================
+   PARTÍCULAS DO FUNDO
+===================================== */
 
-window.addEventListener('resize', resizeCanvas);
+const particleCanvas = document.createElement("canvas");
+const particleContainer = selecionar("#particleCanvas");
 
-class Particle {
-  constructor() {
-    this.reset();
-  }
+let contexto = null;
+let particulas = [];
+let larguraTela = window.innerWidth;
+let alturaTela = window.innerHeight;
+let animacaoParticulas = null;
 
-  reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 3 + 1;
-    this.speedY = Math.random() * 0.4 + 0.1;
-    this.opacity = Math.random() * 0.5 + 0.1;
-    this.life = Math.random() * 100;
-  }
+if (particleContainer) {
+  particleContainer.appendChild(particleCanvas);
+  contexto = particleCanvas.getContext("2d");
+}
 
-  update() {
-    this.y -= this.speedY;
-    this.life += 0.5;
+function redimensionarCanvas() {
+  if (!contexto) return;
 
-    if (this.y < -10) {
-      this.reset();
-      this.y = canvas.height + 10;
+  larguraTela = window.innerWidth;
+  alturaTela = window.innerHeight;
+
+  const escala = Math.min(window.devicePixelRatio || 1, 2);
+
+  particleCanvas.width = larguraTela * escala;
+  particleCanvas.height = alturaTela * escala;
+
+  particleCanvas.style.width = `${larguraTela}px`;
+  particleCanvas.style.height = `${alturaTela}px`;
+
+  contexto.setTransform(escala, 0, 0, escala, 0, 0);
+
+  particulas = Array.from({ length: 45 }, () => ({
+    x: Math.random() * larguraTela,
+    y: Math.random() * alturaTela,
+    tamanho: Math.random() * 2.5 + 1,
+    velocidade: Math.random() * 0.35 + 0.1,
+    opacidade: Math.random() * 0.4 + 0.1
+  }));
+}
+
+function animarParticulas() {
+  if (!contexto || reduzirMovimento) return;
+
+  contexto.clearRect(0, 0, larguraTela, alturaTela);
+
+  particulas.forEach((particula) => {
+    particula.y -= particula.velocidade;
+
+    if (particula.y < -5) {
+      particula.y = alturaTela + 5;
+      particula.x = Math.random() * larguraTela;
     }
-  }
 
-  draw() {
-    ctx.save();
-
-    ctx.globalAlpha = this.opacity;
-    ctx.fillStyle = '#fda4af';
-
-    ctx.beginPath();
-    ctx.arc(
-      this.x,
-      this.y,
-      this.size,
+    contexto.beginPath();
+    contexto.arc(
+      particula.x,
+      particula.y,
+      particula.tamanho,
       0,
       Math.PI * 2
     );
 
-    ctx.fill();
-    ctx.restore();
+    contexto.fillStyle =
+      `rgba(244, 100, 140, ${particula.opacidade})`;
+
+    contexto.fill();
+  });
+
+  animacaoParticulas = requestAnimationFrame(animarParticulas);
+}
+
+if (contexto) {
+  redimensionarCanvas();
+
+  window.addEventListener("resize", redimensionarCanvas);
+
+  if (!reduzirMovimento) {
+    animarParticulas();
   }
 }
 
-for (let i = 0; i < 80; i++) {
-  particles.push(new Particle());
+/* =====================================
+   CHUVA DE CORAÇÕES
+===================================== */
+
+const containerCoracoes = selecionar("#container-coracoes");
+
+function criarCoracao() {
+  if (!containerCoracoes || reduzirMovimento) return;
+
+  // Evita acumular muitos elementos no celular.
+  if (containerCoracoes.childElementCount >= 35) return;
+
+  const coracao = document.createElement("span");
+
+  coracao.className = "coracao-caindo";
+  coracao.textContent = "♥";
+  coracao.setAttribute("aria-hidden", "true");
+
+  coracao.style.left = `${Math.random() * 100}%`;
+  coracao.style.fontSize = `${12 + Math.random() * 17}px`;
+  coracao.style.animationDuration = `${5 + Math.random() * 5}s`;
+  coracao.style.opacity = `${0.3 + Math.random() * 0.5}`;
+
+  containerCoracoes.appendChild(coracao);
+
+  coracao.addEventListener("animationend", () => {
+    coracao.remove();
+  }, { once: true });
 }
 
-function animateParticles() {
-  ctx.clearRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
+if (!reduzirMovimento) {
+  criarCoracao();
 
-  particles.forEach((particle) => {
-    particle.update();
-    particle.draw();
-  });
-
-  requestAnimationFrame(animateParticles);
+  window.setInterval(criarCoracao, 850);
 }
 
-animateParticles();
+/* =====================================
+   ANIMAÇÕES AO ROLAR A PÁGINA
+===================================== */
 
+const elementosRevelar = selecionarTodos(".revelar");
 
-/* =========================
-   CARTÕES
-========================= */
-
-const flipCards = document.querySelectorAll('.flip-card');
-
-flipCards.forEach((card) => {
-  card.addEventListener('click', () => {
-    card.classList.toggle('flipped');
-  });
-});
-
-
-/* =========================
-   SURPRESA
-========================= */
-
-const surpriseButton =
-  document.getElementById('surpriseButton');
-
-const surpriseMessage =
-  document.getElementById('surpriseMessage');
-
-const surpriseMessages = [
-  'Se eu pudesse escolher uma pessoa para encontrar em todas as vidas, escolheria você. ❤️',
-
-  'Você é uma daquelas pessoas que fazem a vida parecer mais bonita simplesmente por existir.',
-
-  'Meu lugar favorito é qualquer lugar onde eu possa estar com você.',
-
-  'Talvez eu não consiga explicar tudo que sinto, mas espero que você consiga sentir através de cada pequeno gesto.',
-
-  'Entre tantas pessoas no mundo, meu coração escolheu você. E eu escolheria você de novo.',
-
-  'Heloísa, você é uma parte muito bonita da minha história. ❤️'
-];
-
-surpriseButton.addEventListener('click', () => {
-  const randomIndex =
-    Math.floor(Math.random() * surpriseMessages.length);
-
-  surpriseMessage.innerHTML = `
-    <i class="fa-solid fa-heart text-rose-400 text-4xl mb-5"></i>
-
-    <p class="font-serif text-xl md:text-2xl text-gray-700 leading-relaxed">
-      ${surpriseMessages[randomIndex]}
-    </p>
-  `;
-
-  surpriseMessage.classList.remove('hidden');
-  surpriseMessage.classList.add('animate-fade-in');
-});
-
-
-/* =========================
-   QUIZ
-========================= */
-
-const quizOptions =
-  document.querySelectorAll('.quiz-option');
-
-const quizResult =
-  document.getElementById('quizResult');
-
-quizOptions.forEach((option) => {
-  option.addEventListener('click', () => {
-
-    const correct =
-      option.dataset.correct === 'true';
-
-    quizOptions.forEach((button) => {
-      button.disabled = true;
-
-      if (button.dataset.correct === 'true') {
-        button.classList.add('correct');
+if ("IntersectionObserver" in window && !reduzirMovimento) {
+  const observador = new IntersectionObserver((entradas) => {
+    entradas.forEach((entrada) => {
+      if (entrada.isIntersecting) {
+        entrada.target.classList.add("visivel");
+        observador.unobserve(entrada.target);
       }
     });
+  }, {
+    threshold: 0.12
+  });
 
-    if (correct) {
+  elementosRevelar.forEach((elemento) => {
+    observador.observe(elemento);
+  });
+} else {
+  elementosRevelar.forEach((elemento) => {
+    elemento.classList.add("visivel");
+  });
+}
 
-      option.classList.add('correct');
+/* =====================================
+   CARTÕES QUE VIRAM
+===================================== */
 
-      quizResult.innerHTML = `
-        <span class="text-rose-500">
-          Acertou! ❤️
-        </span>
-        <br>
-        <span class="text-gray-600 text-base">
-          Mas mesmo essa resposta ainda não consegue explicar tudo.
-        </span>
-      `;
+const cartoes = selecionarTodos(".flip-card");
 
-    } else {
+cartoes.forEach((cartao) => {
+  cartao.addEventListener("click", () => {
+    const virou = cartao.classList.toggle("flipped");
 
-      option.classList.add('wrong');
+    cartao.setAttribute("aria-pressed", String(virou));
+  });
+});
 
-      quizResult.innerHTML = `
-        <span class="text-rose-500">
-          Quase... ❤️
-        </span>
-        <br>
-        <span class="text-gray-600 text-base">
-          A resposta certa é: mais do que consigo explicar.
-        </span>
-      `;
+/* =====================================
+   GALERIA ARRASTÁVEL
+===================================== */
+
+const polaroids = selecionarTodos(".arrastavel");
+
+let polaroidArrastada = null;
+let ponteiroAtivo = null;
+let posicaoInicialX = 0;
+let posicaoInicialY = 0;
+let esquerdaInicial = 0;
+let topoInicial = 0;
+let zIndexAtual = 10;
+let arrastou = false;
+
+polaroids.forEach((polaroid) => {
+  polaroid.style.zIndex = String(++zIndexAtual);
+
+  polaroid.addEventListener("pointerdown", (evento) => {
+    // Não arrasta com o botão direito do mouse.
+    if (evento.pointerType === "mouse" && evento.button !== 0) {
+      return;
     }
 
-    quizResult.classList.remove('hidden');
+    polaroidArrastada = polaroid;
+    ponteiroAtivo = evento.pointerId;
+    arrastou = false;
+
+    const caixa = polaroid.getBoundingClientRect();
+
+    posicaoInicialX = evento.clientX;
+    posicaoInicialY = evento.clientY;
+    esquerdaInicial = caixa.left;
+    topoInicial = caixa.top;
+
+    polaroid.classList.add("em-arraste");
+    polaroid.style.zIndex = String(++zIndexAtual);
+
+    // Permite acompanhar o dedo enquanto a foto é movida.
+    polaroid.style.touchAction = "none";
+    polaroid.setPointerCapture(evento.pointerId);
+
+    evento.preventDefault();
+  });
+
+  polaroid.addEventListener("pointermove", (evento) => {
+    if (
+      !polaroidArrastada ||
+      polaroidArrastada !== polaroid ||
+      evento.pointerId !== ponteiroAtivo
+    ) {
+      return;
+    }
+
+    const diferencaX = evento.clientX - posicaoInicialX;
+    const diferencaY = evento.clientY - posicaoInicialY;
+
+    if (Math.abs(diferencaX) > 3 || Math.abs(diferencaY) > 3) {
+      arrastou = true;
+    }
+
+    if (!arrastou) return;
+
+    const limiteEsquerdo = Math.max(
+      0,
+      window.innerWidth - polaroid.offsetWidth
+    );
+
+    const limiteSuperior = Math.max(
+      0,
+      window.innerHeight - polaroid.offsetHeight
+    );
+
+    const novaEsquerda = Math.min(
+      limiteEsquerdo,
+      Math.max(0, esquerdaInicial + diferencaX)
+    );
+
+    const novoTopo = Math.min(
+      limiteSuperior,
+      Math.max(0, topoInicial + diferencaY)
+    );
+
+    polaroid.style.position = "fixed";
+    polaroid.style.left = `${novaEsquerda}px`;
+    polaroid.style.top = `${novoTopo}px`;
+    polaroid.style.margin = "0";
+    polaroid.style.transform = "rotate(0deg)";
+  });
+
+  function finalizarArraste(evento) {
+    if (
+      polaroidArrastada !== polaroid ||
+      (evento && evento.pointerId !== ponteiroAtivo)
+    ) {
+      return;
+    }
+
+    polaroid.classList.remove("em-arraste");
+    polaroid.style.touchAction = "pan-y";
+
+    if (polaroid.hasPointerCapture(ponteiroAtivo)) {
+      polaroid.releasePointerCapture(ponteiroAtivo);
+    }
+
+    polaroidArrastada = null;
+    ponteiroAtivo = null;
+  }
+
+  polaroid.addEventListener("pointerup", finalizarArraste);
+  polaroid.addEventListener("pointercancel", finalizarArraste);
+
+  // Evita que arrastar a imagem provoque uma seleção de texto.
+  polaroid.addEventListener("dragstart", (evento) => {
+    evento.preventDefault();
   });
 });
 
-
-/* =========================
+/* =====================================
    CONTADOR DE BATIMENTOS
-========================= */
+===================================== */
 
-const heartbeatCounter =
-  document.getElementById('heartbeatCounter');
+const heartbeatCounter = selecionar("#heartbeatCounter");
 
-let heartbeats = 1420800;
+let batimentos = 1420800;
 
-function updateHeartbeat() {
+function atualizarBatimentos() {
+  if (!heartbeatCounter) return;
 
-  heartbeats++;
+  batimentos += 1;
 
   heartbeatCounter.textContent =
-    heartbeats.toLocaleString('pt-BR');
-
-  heartbeatCounter.classList.add('heartbeat');
-
-  setTimeout(() => {
-    heartbeatCounter.classList.remove('heartbeat');
-  }, 1200);
+    batimentos.toLocaleString("pt-BR");
 }
 
-setInterval(updateHeartbeat, 800);
+if (heartbeatCounter) {
+  heartbeatCounter.textContent =
+    batimentos.toLocaleString("pt-BR");
 
+  window.setInterval(atualizarBatimentos, 1000);
+}
 
-/* =========================
-   MÚSICA AMBIENTE
-========================= */
+/* =====================================
+   SURPRESA ROMÂNTICA
+===================================== */
 
-const musicButton =
-  document.getElementById('musicButton');
+const surpriseButton = selecionar("#surpriseButton");
+const surpriseMessage = selecionar("#surpriseMessage");
 
-let audioContext = null;
-let isPlaying = false;
-let musicInterval = null;
+const mensagensSurpresa = [
+  "Se eu pudesse escolher uma pessoa para encontrar em todas as vidas, escolheria você. ❤️",
 
-function playSoftChord() {
+  "Você é uma daquelas pessoas que fazem a vida parecer mais bonita simplesmente por existir.",
 
-  if (!audioContext) {
-    audioContext =
-      new (
-        window.AudioContext ||
-        window.webkitAudioContext
-      )();
-  }
+  "Meu lugar favorito é qualquer lugar onde eu possa estar com você.",
 
-  if (audioContext.state === 'suspended') {
-    audioContext.resume();
-  }
+  "Talvez eu não consiga explicar tudo o que sinto, mas espero que você consiga sentir através de cada pequeno gesto.",
 
-  const frequencies = [
-    261.63,
-    329.63,
-    392.00
-  ];
+  "Entre tantas pessoas no mundo, meu coração escolheu você. E eu escolheria você de novo.",
 
-  frequencies.forEach((frequency, index) => {
+  "Heloísa, você é uma parte muito bonita da minha história. Eu te amo! ❤️",
 
-    const oscillator =
-      audioContext.createOscillator();
+  "Se meu coração pudesse escrever, tenho certeza de que seu nome estaria em todas as páginas."
+];
 
-    const gain =
-      audioContext.createGain();
+let ultimaMensagem = -1;
 
-    oscillator.type = 'sine';
-    oscillator.frequency.value = frequency;
+if (surpriseButton && surpriseMessage) {
+  surpriseButton.addEventListener("click", () => {
+    let indice;
 
-    const startTime =
-      audioContext.currentTime + index * 0.05;
+    do {
+      indice = Math.floor(Math.random() * mensagensSurpresa.length);
+    } while (mensagensSurpresa.length > 1 && indice === ultimaMensagem);
 
-    gain.gain.setValueAtTime(
-      0,
-      startTime
-    );
+    ultimaMensagem = indice;
 
-    gain.gain.linearRampToValueAtTime(
-      0.035,
-      startTime + 0.4
-    );
+    // Cria os elementos sem inserir texto do usuário como HTML.
+    surpriseMessage.replaceChildren();
 
-    gain.gain.linearRampToValueAtTime(
-      0,
-      startTime + 2.5
-    );
+    const coracao = document.createElement("span");
+    coracao.className = "coracao-mensagem";
+    coracao.textContent = "♥";
+    coracao.setAttribute("aria-hidden", "true");
 
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
+    const texto = document.createElement("p");
+    texto.textContent = mensagensSurpresa[indice];
 
-    oscillator.start(startTime);
-    oscillator.stop(startTime + 2.6);
+    surpriseMessage.append(coracao, texto);
+    surpriseMessage.classList.remove("oculto");
+
+    surpriseButton.textContent = "Abrir outra mensagem ♥";
+
+    if (!reduzirMovimento) {
+      for (let i = 0; i < 12; i++) {
+        window.setTimeout(criarCoracao, i * 100);
+      }
+    }
   });
 }
 
-musicButton.addEventListener('click', () => {
+/* =====================================
+   QUIZ DO CASAL
+===================================== */
 
-  if (!isPlaying) {
+const quizOptions = selecionarTodos(".opcao-quiz");
+const quizResult = selecionar("#quizResult");
+const quizReset = selecionar("#quizReset");
 
-    isPlaying = true;
+function responderQuiz(opcaoEscolhida) {
+  const correta = opcaoEscolhida.dataset.correct === "true";
 
-    musicButton.innerHTML =
-      '<i class="fa-solid fa-pause"></i>';
+  quizOptions.forEach((opcao) => {
+    opcao.disabled = true;
 
-    playSoftChord();
+    if (opcao.dataset.correct === "true") {
+      opcao.classList.add("correta");
+    } else if (opcao === opcaoEscolhida && !correta) {
+      opcao.classList.add("errada");
+    }
+  });
 
-    musicInterval =
-      setInterval(playSoftChord, 2800);
+  if (!quizResult) return;
 
-  } else {
+  quizResult.textContent = correta
+    ? "Acertou, meu amor! ❤️ Mas até essa resposta é pequena perto de tudo o que sinto por você."
+    : "Quase! ❤️ A resposta certa é: mais do que consigo explicar.";
 
-    isPlaying = false;
-
-    musicButton.innerHTML =
-      '<i class="fa-solid fa-music"></i>';
-
-    clearInterval(musicInterval);
+  if (quizReset) {
+    quizReset.classList.remove("oculto");
   }
+}
+
+quizOptions.forEach((opcao) => {
+  opcao.addEventListener("click", () => {
+    responderQuiz(opcao);
+  });
 });
 
-
-/* =========================
-   MOVIMENTO SUAVE DOS CARDS
-========================= */
-
-document.querySelectorAll('.flip-card')
-  .forEach((card) => {
-
-    card.addEventListener('mouseenter', () => {
-      if (!card.classList.contains('flipped')) {
-        card.style.transform = 'translateY(-4px)';
-      }
+if (quizReset) {
+  quizReset.addEventListener("click", () => {
+    quizOptions.forEach((opcao) => {
+      opcao.disabled = false;
+      opcao.classList.remove("correta", "errada");
     });
 
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
+    if (quizResult) {
+      quizResult.textContent = "";
+    }
 
+    quizReset.classList.add("oculto");
   });
+}
+
+/* =====================================
+   MÚSICA
+===================================== */
+
+// Primeiro tenta tocar o arquivo sua-musica.mp3.
+// Se ele não estiver disponível, usa uma melodia
+// suave gerada pelo navegador.
+
+const musicButton = selecionar("#musicButton");
+const musicLabel = selecionar("#musicLabel");
+const musica = selecionar("#musica-fundo");
+
+let tocando = false;
+let modoSintetizador = false;
+let audioContext = null;
+let intervaloMusical = null;
+let geracaoAudio = 0;
+
+function atualizarBotaoMusica(ativo) {
+  if (!musicButton) return;
+
+  musicButton.setAttribute("aria-pressed", String(ativo));
+  musicButton.setAttribute(
+    "aria-label",
+    ativo ? "Pausar música" : "Tocar música"
+  );
+
+  if (musicLabel) {
+    musicLabel.textContent = ativo ? "Pausar música" : "Tocar música";
+  }
+}
+
+function pararMelodia() {
+  if (intervaloMusical !== null) {
+    clearInterval(intervaloMusical);
+    intervaloMusical = null;
+  }
+}
+
+function tocarAcorde() {
+  if (!audioContext || audioContext.state !== "running") return;
+
+  const frequencias = [261.63, 329.63, 392.00];
+  const inicio = audioContext.currentTime;
+
+  frequencias.forEach((frequencia, indice) => {
+    const oscilador = audioContext.createOscillator();
+    const volume = audioContext.createGain();
+
+    oscilador.type = "sine";
+    oscilador.frequency.value = frequencia;
+
+    const momento = inicio + indice * 0.08;
+
+    volume.gain.setValueAtTime(0.0001, momento);
+    volume.gain.exponentialRampToValueAtTime(0.035, momento + 0.35);
+    volume.gain.exponentialRampToValueAtTime(0.0001, momento + 2.2);
+
+    oscilador.connect(volume);
+    volume.connect(audioContext.destination);
+
+    oscilador.start(momento);
+    oscilador.stop(momento + 2.3);
+  });
+}
+
+async function iniciarMelodia() {
+  const AudioContextAPI =
+    window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextAPI) {
+    throw new Error("Este navegador não oferece suporte ao áudio.");
+  }
+
+  if (!audioContext) {
+    audioContext = new AudioContextAPI();
+  }
+
+  if (audioContext.state === "suspended") {
+    await audioContext.resume();
+  }
+
+  modoSintetizador = true;
+  tocarAcorde();
+
+  pararMelodia();
+  intervaloMusical = window.setInterval(tocarAcorde, 2800);
+}
+
+function pararAudio() {
+  if (musica) {
+    musica.pause();
+  }
+
+  pararMelodia();
+  tocando = false;
+  atualizarBotaoMusica(false);
+}
+
+async function alternarMusica() {
+  if (tocando) {
+    pararAudio();
+    return;
+  }
+
+  const tentativaAtual = ++geracaoAudio;
+
+  // Tenta primeiro a música escolhida pelo usuário.
+  if (musica && musica.querySelector("source")) {
+    try {
+      musica.volume = 0.6;
+
+      // Se o arquivo já falhou, não insiste nele.
+      if (musica.error) {
+        throw new Error("Arquivo de música indisponível.");
+      }
+
+      await musica.play();
+
+      if (tentativaAtual !== geracaoAudio) {
+        musica.pause();
+        return;
+      }
+
+      modoSintetizador = false;
+      tocando = true;
+      atualizarBotaoMusica(true);
+      return;
+    } catch (erro) {
+      if (tentativaAtual !== geracaoAudio) return;
+
+      // Arquivo ausente ou incompatível: tenta a melodia alternativa.
+      musica.pause();
+      musica.currentTime = 0;
+    }
+  }
+
+  try {
+    await iniciarMelodia();
+
+    if (tentativaAtual !== geracaoAudio) {
+      pararMelodia();
+      return;
+    }
+
+    tocando = true;
+    atualizarBotaoMusica(true);
+  } catch (erro) {
+    pararAudio();
+
+    if (musicLabel) {
+      musicLabel.textContent = "Áudio indisponível";
+    }
+
+    console.error("Não foi possível iniciar o áudio:", erro);
+  }
+}
+
+if (musicButton) {
+  musicButton.addEventListener("click", alternarMusica);
+}
+
+if (musica) {
+  musica.addEventListener("ended", () => {
+    tocando = false;
+    atualizarBotaoMusica(false);
+  });
+
+  musica.addEventListener("error", () => {
+    // O fallback será acionado quando o usuário apertar o botão.
+    console.info(
+      "Arquivo de música não encontrado. Uma melodia alternativa está disponível."
+    );
+  });
+}
+
+document.addEventListener("visibilitychange", () => {
+  // Não interrompe a música automaticamente ao trocar de aplicativo.
+  // O navegador pode suspender o áudio em segundo plano.
+});
+
+/* =====================================
+   INICIALIZAÇÃO
+===================================== */
+
+atualizarBotaoMusica(false);
+
+console.info("Site de Heloísa carregado com sucesso! ❤️");

@@ -542,3 +542,819 @@
   </div>
 
 </footer>
+ /* Reset e Estilos Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* Oculta o cursor padrão para usar o coração */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffe6e6;
+    color: #333;
+    overflow-x: hidden;
+    text-align: center;
+}
+
+/* Cursor de Coração */
+#cursor-coracao {
+    width: 20px;
+    height: 20px;
+    background-color: #ff3366;
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px #ff3366;
+}
+#cursor-coracao::before, #cursor-coracao::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #ff3366;
+    border-radius: 50%;
+}
+#cursor-coracao::before { top: -10px; left: 0; }
+#cursor-coracao::after { top: 0; left: 10px; }
+
+/* Chuva de Corações */
+#container-coracoes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+}
+.coracao-caindo {
+    position: absolute;
+    color: rgba(255, 51, 102, 0.6);
+    font-size: 20px;
+    animation: cair linear infinite;
+}
+@keyframes cair {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* Botão de Música */
+#btn-musica {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff3366;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    z-index: 100;
+}
+
+/* Animações de Scroll */
+.secao {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+}
+.secao.visivel {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Coração Pulsante */
+.coracao-pulsante {
+    font-size: 80px;
+    animation: pulsar 1s infinite alternate;
+    margin: 20px 0;
+}
+@keyframes pulsar {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+/* Formulários e Botões */
+input, button {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid #ff99aa;
+    font-size: 16px;
+}
+button {
+    background-color: #ff3366;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+button:hover {
+    background-color: #cc0033;
+}
+
+/* Galeria Polaroid */
+.area-polaroids {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+.polaroid {
+    background: white;
+    padding: 15px 15px 30px 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: absolute;
+    width: 200px;
+    transform: rotate(-5deg);
+    transition: transform 0.2s, z-index 0.2s;
+    user-select: none;
+}
+.polaroid:nth-child(2) { transform: rotate(3deg); left: 30%; }
+.polaroid:nth-child(3) { transform: rotate(-2deg); left: 60%; }
+.polaroid:active { transform: scale(1.05) rotate(0deg); z-index: 10; }
+.foto-placeholder {
+    width: 100%;
+    height: 150px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.dica { font-size: 12px; color: #666; margin-bottom: 20px; }
+
+/* Cartões 3D */
+.container-cartoes {
+    display: flex;
+    gap: 20px;
+}
+.cartao {
+    width: 200px;
+    height: 150px;
+    perspective: 1000px;
+}
+.cartao-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+.cartao:hover .cartao-inner {
+    transform: rotateY(180deg);
+}
+.cartao-frente, .cartao-costas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.cartao-frente { background-color: white; color: #ff3366; font-weight: bold; }
+.cartao-costas { background-color: #ff3366; color: white; transform: rotateY(180deg); }
+
+/* Linha do Tempo */
+.timeline {
+    list-style-type: none;
+    border-left: 3px solid #ff3366;
+    padding-left: 20px;
+    text-align: left;
+}
+.timeline li {
+    margin-bottom: 20px;
+    position: relative;
+}
+.timeline li::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    background: #ff3366;
+    border-radius: 50%;
+}
+
+.escondido { display: none; margin-top: 20px; font-size: 24px; font-weight: bold; color: #ff3366; }
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #fffafa;
+  color: #374151;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #fda4af;
+  color: white;
+}
+
+/* Partículas */
+#particleCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Cartões */
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Animação flutuante */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Fade */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.7s ease forwards;
+}
+
+/* Pulso */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.08);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.05);
+  }
+}
+
+.heartbeat {
+  animation: heartbeat 1.2s infinite;
+}
+
+/* Botões do quiz */
+.quiz-option {
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
+.quiz-option.correct {
+  background: #ffe4e6;
+  border-color: #fb7185;
+  color: #be123c;
+}
+
+.quiz-option.wrong {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  color: #6b7280;
+}
+
+/* Surpresa */
+#surpriseMessage {
+  animation: fadeIn 0.7s ease forwards;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .font-script {
+    line-height: 1.1;
+  }
+}
+ // Cursor Personalizado de Coração
+const cursor = document.getElementById('cursor-coracao');
+document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+});
+
+// Música de Fundo
+const btnMusica = document.getElementById('btn-musica');
+const musica = document.getElementById('musica-fundo');
+let tocando = false;
+
+btnMusica.addEventListener('click', () => {
+    if (tocando) {
+        musica.pause();
+        btnMusica.textContent = "🎵 Tocar Nossa Música";
+    } else {
+        musica.play();
+        btnMusica.textContent = "⏸️ Pausar Música";
+    }
+    tocando = !tocando;
+});
+
+// Chuva de Corações Dinâmica
+function criarCoracao() {
+    const coracao = document.createElement('div');
+    coracao.classList.add('coracao-caindo');
+    coracao.textContent = '❤️';
+    coracao.style.left = Math.random() * 100 + 'vw';
+    coracao.style.animationDuration = Math.random() * 3 + 2 + 's';
+    
+    document.getElementById('container-coracoes').appendChild(coracao);
+    
+    setTimeout(() => {
+        coracao.remove();
+    }, 5000);
+}
+setInterval(criarCoracao, 300);
+
+// Contador de Batimentos (Fictício, atualiza a cada segundo)
+let batimentos = 35467200; // Valor base
+const displayBatimentos = document.getElementById('contador-batimentos');
+setInterval(() => {
+    batimentos += Math.floor(Math.random() * 3) + 1;
+    displayBatimentos.textContent = batimentos.toLocaleString('pt-BR');
+}, 1000);
+
+// Calculadora do Amor
+function calcularAmor() {
+    const resultado = document.getElementById('resultado-amor');
+    resultado.style.opacity = 0;
+    setTimeout(() => {
+        // Sempre 100% para Ailson e Heloísa!
+        resultado.textContent = "Compatibilidade: 1000%! Vocês nasceram um para o outro! ❤️";
+        resultado.style.transition = "opacity 0.5s";
+        resultado.style.opacity = 1;
+    }, 300);
+}
+
+// Quiz
+function responderQuiz(correto) {
+    const resultado = document.getElementById('resultado-quiz');
+    if (correto) {
+        resultado.textContent = "Acertou, meu amor! ❤️ Ninguém faz igual.";
+        resultado.style.color = "#ff3366";
+    } else {
+        resultado.textContent = "Errou! Tente de novo! 😂";
+        resultado.style.color = "#333";
+    }
+}
+
+// Botão Surpresa
+document.getElementById('btn-surpresa').addEventListener('click', () => {
+    const msg = document.getElementById('mensagem-surpresa');
+    msg.classList.remove('escondido');
+    msg.style.animation = "pulsar 1s infinite alternate";
+    
+    // Intensifica a chuva de corações
+    for(let i = 0; i < 30; i++) {
+        setTimeout(criarCoracao, i * 100);
+    }
+});
+
+// Animação de Scroll (Revelar seções)
+const secoes = document.querySelectorAll('.animar-scroll');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visivel');
+        }
+    });
+}, { threshold: 0.1 });
+
+secoes.forEach(secao => {
+    observer.observe(secao);
+});
+
+// Lógica de Arrastar Polaroids
+const polaroids = document.querySelectorAll('.arrastavel');
+let dragElemento = null;
+let offset = [0, 0];
+let zIndexAtual = 10;
+
+polaroids.forEach(polaroid => {
+    polaroid.addEventListener('mousedown', (e) => {
+        dragElemento = polaroid;
+        dragElemento.style.zIndex = ++zIndexAtual;
+        offset = [
+            dragElemento.offsetLeft - e.clientX,
+            dragElemento.offsetTop - e.clientY
+        ];
+    });
+});
+
+document.addEventListener('mouseup', () => {
+    dragElemento = null;
+});
+
+document.addEventListener('mousemove', (e) => {
+    e.preventDefault();
+    if (dragElemento) {
+        const mousePosition = { x: e.clientX, y: e.clientY };
+        dragElemento.style.left = (mousePosition.x + offset[0]) + 'px';
+        dragElemento.style.top = (mousePosition.y + offset[1]) + 'px';
+        dragElemento.style.position = 'absolute';
+    }
+});
+/* =========================
+   PARTÍCULAS
+========================= */
+
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+resizeCanvas();
+
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 3 + 1;
+    this.speedY = Math.random() * 0.4 + 0.1;
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.life = Math.random() * 100;
+  }
+
+  update() {
+    this.y -= this.speedY;
+    this.life += 0.5;
+
+    if (this.y < -10) {
+      this.reset();
+      this.y = canvas.height + 10;
+    }
+  }
+
+  draw() {
+    ctx.save();
+
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = '#fda4af';
+
+    ctx.beginPath();
+    ctx.arc(
+      this.x,
+      this.y,
+      this.size,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+for (let i = 0; i < 80; i++) {
+  particles.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  particles.forEach((particle) => {
+    particle.update();
+    particle.draw();
+  });
+
+  requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+
+/* =========================
+   CARTÕES
+========================= */
+
+const flipCards = document.querySelectorAll('.flip-card');
+
+flipCards.forEach((card) => {
+  card.addEventListener('click', () => {
+    card.classList.toggle('flipped');
+  });
+});
+
+
+/* =========================
+   SURPRESA
+========================= */
+
+const surpriseButton =
+  document.getElementById('surpriseButton');
+
+const surpriseMessage =
+  document.getElementById('surpriseMessage');
+
+const surpriseMessages = [
+  'Se eu pudesse escolher uma pessoa para encontrar em todas as vidas, escolheria você. ❤️',
+
+  'Você é uma daquelas pessoas que fazem a vida parecer mais bonita simplesmente por existir.',
+
+  'Meu lugar favorito é qualquer lugar onde eu possa estar com você.',
+
+  'Talvez eu não consiga explicar tudo que sinto, mas espero que você consiga sentir através de cada pequeno gesto.',
+
+  'Entre tantas pessoas no mundo, meu coração escolheu você. E eu escolheria você de novo.',
+
+  'Heloísa, você é uma parte muito bonita da minha história. ❤️'
+];
+
+surpriseButton.addEventListener('click', () => {
+  const randomIndex =
+    Math.floor(Math.random() * surpriseMessages.length);
+
+  surpriseMessage.innerHTML = `
+    <i class="fa-solid fa-heart text-rose-400 text-4xl mb-5"></i>
+
+    <p class="font-serif text-xl md:text-2xl text-gray-700 leading-relaxed">
+      ${surpriseMessages[randomIndex]}
+    </p>
+  `;
+
+  surpriseMessage.classList.remove('hidden');
+  surpriseMessage.classList.add('animate-fade-in');
+});
+
+
+/* =========================
+   QUIZ
+========================= */
+
+const quizOptions =
+  document.querySelectorAll('.quiz-option');
+
+const quizResult =
+  document.getElementById('quizResult');
+
+quizOptions.forEach((option) => {
+  option.addEventListener('click', () => {
+
+    const correct =
+      option.dataset.correct === 'true';
+
+    quizOptions.forEach((button) => {
+      button.disabled = true;
+
+      if (button.dataset.correct === 'true') {
+        button.classList.add('correct');
+      }
+    });
+
+    if (correct) {
+
+      option.classList.add('correct');
+
+      quizResult.innerHTML = `
+        <span class="text-rose-500">
+          Acertou! ❤️
+        </span>
+        <br>
+        <span class="text-gray-600 text-base">
+          Mas mesmo essa resposta ainda não consegue explicar tudo.
+        </span>
+      `;
+
+    } else {
+
+      option.classList.add('wrong');
+
+      quizResult.innerHTML = `
+        <span class="text-rose-500">
+          Quase... ❤️
+        </span>
+        <br>
+        <span class="text-gray-600 text-base">
+          A resposta certa é: mais do que consigo explicar.
+        </span>
+      `;
+    }
+
+    quizResult.classList.remove('hidden');
+  });
+});
+
+
+/* =========================
+   CONTADOR DE BATIMENTOS
+========================= */
+
+const heartbeatCounter =
+  document.getElementById('heartbeatCounter');
+
+let heartbeats = 1420800;
+
+function updateHeartbeat() {
+
+  heartbeats++;
+
+  heartbeatCounter.textContent =
+    heartbeats.toLocaleString('pt-BR');
+
+  heartbeatCounter.classList.add('heartbeat');
+
+  setTimeout(() => {
+    heartbeatCounter.classList.remove('heartbeat');
+  }, 1200);
+}
+
+setInterval(updateHeartbeat, 800);
+
+
+/* =========================
+   MÚSICA AMBIENTE
+========================= */
+
+const musicButton =
+  document.getElementById('musicButton');
+
+let audioContext = null;
+let isPlaying = false;
+let musicInterval = null;
+
+function playSoftChord() {
+
+  if (!audioContext) {
+    audioContext =
+      new (
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
+  }
+
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
+
+  const frequencies = [
+    261.63,
+    329.63,
+    392.00
+  ];
+
+  frequencies.forEach((frequency, index) => {
+
+    const oscillator =
+      audioContext.createOscillator();
+
+    const gain =
+      audioContext.createGain();
+
+    oscillator.type = 'sine';
+    oscillator.frequency.value = frequency;
+
+    const startTime =
+      audioContext.currentTime + index * 0.05;
+
+    gain.gain.setValueAtTime(
+      0,
+      startTime
+    );
+
+    gain.gain.linearRampToValueAtTime(
+      0.035,
+      startTime + 0.4
+    );
+
+    gain.gain.linearRampToValueAtTime(
+      0,
+      startTime + 2.5
+    );
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start(startTime);
+    oscillator.stop(startTime + 2.6);
+  });
+}
+
+musicButton.addEventListener('click', () => {
+
+  if (!isPlaying) {
+
+    isPlaying = true;
+
+    musicButton.innerHTML =
+      '<i class="fa-solid fa-pause"></i>';
+
+    playSoftChord();
+
+    musicInterval =
+      setInterval(playSoftChord, 2800);
+
+  } else {
+
+    isPlaying = false;
+
+    musicButton.innerHTML =
+      '<i class="fa-solid fa-music"></i>';
+
+    clearInterval(musicInterval);
+  }
+});
+
+
+/* =========================
+   MOVIMENTO SUAVE DOS CARDS
+========================= */
+
+document.querySelectorAll('.flip-card')
+  .forEach((card) => {
+
+    card.addEventListener('mouseenter', () => {
+      if (!card.classList.contains('flipped')) {
+        card.style.transform = 'translateY(-4px)';
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+
+  });
